@@ -26,22 +26,6 @@
     padding: 52px 0 40px;
 }
 
-@media screen and (max-width: 780px) {
-    .header__container_sign {
-        padding-top: 232px;
-        width: 51%;
-    }
-}
-
-@media screen and (max-width: 400px) {
-    .header__container_sign {
-        padding-top: 56px;
-        width: 81%;
-        align-items: center;
-    }
-}
-
-
 .header__container-text {
     font-weight: 500;
     font-size: 24px;
@@ -128,5 +112,20 @@
 @media screen and (max-width: 780px) {
     .header__container {
         width: 92%;;
+    }
+}
+
+@media screen and (max-width: 780px) {
+    .header__container_sign {
+        padding-top: 232px;
+        width: 51%;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .header__container_sign {
+        padding-top: 56px;
+        width: 81%;
+        align-items: center;
     }
 }
