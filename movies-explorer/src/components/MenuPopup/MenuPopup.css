@@ -1,0 +1,136 @@
+.menu {
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: flex-end;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.5s, opacity 0.5s linear;
+}
+
+.menu__container {
+    width: 68vw;
+    height: 100vh;
+    display: none;
+    background-color: #FAFAFA;
+}
+
+.menu__links {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 112px;
+}
+
+.menu__link {
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 1.2;
+    color: #000000;
+    min-height: 22px;
+    padding-bottom: 6px;
+    margin-bottom: 22px;
+}
+
+.menu__link:hover {
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.menu__profile-btn {
+    width: 100px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.2;
+    color: #000000;
+    border: 2px solid rgba(170, 170, 170, 0.2);
+    box-sizing: border-box;
+    border-radius: 50px;
+    margin-top: 593px;
+}
+
+.menu__profile-btn:hover {
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.menu__icon {
+    width: 12px;
+    height: 14px;
+    margin-right: 7px;
+    background-image: url('../../images/avatar.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.menu__movies-link {
+    border-bottom: 2px solid #000000;
+}
+
+
+.menu__close-btn {
+    background-image: url('../../images/big_cross.svg');
+    width: 22px;
+    height: 22px;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    background-size: cover;
+    margin: 22px 22px 0 0;
+}
+
+.menu__close-btn:hover {
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.menu_visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+.menu__container_visible {
+    visibility: visible;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    opacity: 1;
+}
+
+@media screen and (max-width: 480px) {
+    .menu__container {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .menu__close-btn {
+        margin: 13px 13px 0 0;
+    } 
+}
+
+@media screen and (max-width: 480px) {
+    .menu__links {
+        margin-top: 100px;
+    } 
+}
+
+@media screen and (max-width: 480px) {
+    .menu__profile-btn {
+        margin-top: 400px;
+    } 
+}

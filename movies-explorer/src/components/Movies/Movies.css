@@ -1,0 +1,11 @@
+.movies {
+    width: 89%;
+    margin: 0 auto;
+}
+
+@media screen and (max-width: 780px) {
+    .movies {
+        width: 92%;;
+    }
+}
+

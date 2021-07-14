@@ -1,0 +1,93 @@
+.movies__pic {
+    width: 100%;
+}
+
+.movies__card {
+    background-color: #FFFFFF;
+    box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.08);
+    border-radius: 6px;
+}
+
+.movies__card-container {
+    display: flex;
+    justify-content: space-between;
+    width: 91%;
+    margin: 9px auto 0;
+}
+
+.movies__card-text {
+    display: flex;
+    flex-direction: column;
+    width: 88%;
+}
+
+.movies__card-name {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 1.2;
+    color: #000000;
+    margin: 7px 0 17px;
+}
+
+.movies__card-time {
+    margin: 0 0 16px;
+    color: #A0A0A0;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 1.2;
+}
+
+.movies__like {
+    width: 30px;
+    height: 30px;
+    background-color: #FFFFFF;
+    background-image: url('../../images/like.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    border: none;
+    padding: 0;
+}
+
+.movies__like_active {
+    background-image: url('../../images/like_active.svg');
+}
+
+.movies__card-link:hover {
+    cursor: pointer;
+}
+
+.movies__delete { 
+    width: 30px;
+    height: 30px;
+    background-color: #FFFFFF;
+    border: none;
+    padding: 0;
+}
+
+.movies__delete:hover {
+    width: 30px;
+    height: 30px;
+    background-color: #FFFFFF;
+    background-image: url('../../images/cross.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    border: none;
+    padding: 0;
+}
+
+@media screen and (max-width: 650px) {
+    .movies__card-name {
+        font-size: 12px;
+        margin: 5px 0 14px;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .movies__card-time {
+        font-size: 10px;
+        margin-bottom: 14px;
+    }
+}
