@@ -1,6 +1,6 @@
 function MoviesCard({ name, time, pic, saved }) {
     
-    const btnClassName = ( saved ? 'movies__delete' : 'movies__like' );
+    const btnClassName = `${saved ? 'movies__delete' : 'movies__like'}`;
     
     return (
         <li className="movies__card">

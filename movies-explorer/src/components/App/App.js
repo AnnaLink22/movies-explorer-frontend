@@ -48,7 +48,7 @@ function App() {
         </Route>
 
         <Route path="/notfound">
-            <NotFoundPage />
+          <NotFoundPage />
         </Route>
 
       </Switch>
