@@ -65,17 +65,14 @@
     background-color: #FFFFFF;
     border: none;
     padding: 0;
-}
-
-.movies__delete:hover {
-    width: 30px;
-    height: 30px;
-    background-color: #FFFFFF;
     background-image: url('../../images/cross.svg');
     background-position: center;
     background-repeat: no-repeat;
-    border: none;
-    padding: 0;
+    visibility: hidden;
+}
+
+.movies__card:hover .movies__delete {
+    visibility: visible;
 }
 
 @media screen and (max-width: 650px) {
@@ -91,3 +88,21 @@
         margin-bottom: 14px;
     }
 }
+
+/* @media screen and (max-width: 1290px) {
+    .movies__pic {
+        min-height: 203px;
+    }
+}
+
+@media screen and (max-width: 780px) {
+    .movies__pic {
+        min-height: 190px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .movies__pic {
+        min-height: 168px;
+    }
+} */
