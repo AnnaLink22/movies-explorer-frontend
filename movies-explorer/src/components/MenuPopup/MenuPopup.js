@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom';
 
 function MenuPopup() {
     return (
-        <section className="menu menu_visible">
-            <div className="menu__container menu__container_visible">
+        <section className="menu">
+            <div className="menu__container">
                 <button type="button" className="menu__close-btn"></button>
                 <div className="menu__links">
                     <Link to="/" className="menu__link menu__main-link">Главная</Link>

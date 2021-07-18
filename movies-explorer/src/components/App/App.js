@@ -9,6 +9,7 @@ import Profile from '../Profile/Profile.js';
 import Login from '../Login/Login.js';
 import Register from '../Register/Register.js';
 import MenuPopup from '../MenuPopup/MenuPopup.js';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute.js';
 import NotFoundPage from '../NotFoundPage/NotFoundPage.js';
 
 function App() {
@@ -18,18 +19,21 @@ function App() {
 
       <Switch>
 
-        <Route path="/movies">
-          <Movies />
-          <MenuPopup />
-        </Route>
+        <ProtectedRoute
+          path="/movies"
+          component={Movies}
+        />
 
-        <Route path="/saved-movies">
-          <SavedMovies />
-        </Route>
+        <ProtectedRoute
+          path="/saved-movies"
+          component={SavedMovies}
+        />
 
-        <Route path="/profile">
-          <Profile />
-        </Route>
+        <ProtectedRoute
+          path="/profile"
+          component={Profile}
+        />
+
 
         <Route path="/signin">
           <div className="login__container">
@@ -52,6 +56,8 @@ function App() {
         </Route>
 
       </Switch>
+
+      <MenuPopup />
 
       <Footer />
     </div>
