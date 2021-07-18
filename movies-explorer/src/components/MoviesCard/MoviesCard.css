@@ -89,7 +89,7 @@
     }
 }
 
-@media screen and (max-width: 1290px) {
+/* @media screen and (max-width: 1290px) {
     .movies__pic {
         min-height: 203px;
     }
@@ -105,4 +105,4 @@
     .movies__pic {
         min-height: 168px;
     }
-}
+} */
