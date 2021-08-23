@@ -17,34 +17,29 @@ class Api {
         }).then(onError)
     }
 
-    saveUserInfo(userName, userAbout, headers) {
+    saveUserInfo(userName, userEmail, headers) {
         return fetch(`${this._url}users/me`, {
             method: 'PATCH',
             headers: headers,
             body: JSON.stringify({
                 name: userName,
-                about: userAbout
+                email: userEmail
             })
         }).then(onError)
     }
 
-
-
-    getAllMovies(headers) {
+    getLikedMovies(headers) {
         return fetch(`${this._url}movies`, {
             method: 'GET',
             headers: headers
         }).then(onError)
     }
 
-    saveNewMovie(name, link, headers) {
+    saveNewMovie(movie, headers) {
         return fetch(`${this._url}movies`, {
             method: 'POST',
             headers: headers,
-            body: JSON.stringify({
-                name: name,
-                link: link
-            })
+            body: JSON.stringify({movie})
         }).then(onError)
     }
 
@@ -67,7 +62,7 @@ class Api {
 }
 
 const api = new Api({
-    url: 'https://api.joanna.wang.students.nomoredomains.icu/',
+    url: 'https://api.skyblue.nomoredomains.icu',
 });
 
 export default api;

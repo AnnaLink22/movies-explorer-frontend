@@ -1,11 +1,11 @@
 import MoviesCardList from '../MoviesCardList/MoviesCardList.js';
 import SearchForm from '../SearchForm/SearchForm.js';
 
-function Movies() {
+function Movies({movies, handleMovieLike}) {
     return (
         <section className="movies">
             <SearchForm />
-            <MoviesCardList />
+            <MoviesCardList movies={movies} onCardClick={handleMovieLike} />
         </section>
     )
 }

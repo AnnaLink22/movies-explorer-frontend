@@ -1,10 +1,10 @@
-function MoviesCard({ name, time, pic, saved }) {
+function MoviesCard({ name, time, pic, link, saved }) {
     
     const btnClassName = `${saved ? 'movies__delete' : 'movies__like'}`;
     
     return (
         <li className="movies__card">
-            <a className="movies__card-link" href="#" target="_blank" rel="noreferrer">
+            <a className="movies__card-link" href={link} target="_blank" rel="noreferrer">
                 <img src={pic} alt={name} className="movies__pic" />
             </a>
             <div className="movies__card-container">

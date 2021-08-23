@@ -10,10 +10,13 @@ class mApi {
         this._url = config.url;
     }
 
-    getInfo(headers) {
+    getAllMovies() {
         return fetch(`${this._url}`, {
             method: 'GET',
-            headers: headers
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
         }).then(onError)
     }
 }

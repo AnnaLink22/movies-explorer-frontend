@@ -1,11 +1,11 @@
 import MoviesCardList from '../MoviesCardList/MoviesCardList.js';
 import SearchForm from '../SearchForm/SearchForm.js';
 
-function SavedMovies() {
+function SavedMovies({loggedIn, likedMovies}) {
     return (
         <section className="saved-movies">
             <SearchForm />
-            <MoviesCardList />
+            <MoviesCardList saved={true} movies={likedMovies}/>
         </section>
     )
 }

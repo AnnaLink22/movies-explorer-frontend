@@ -1,6 +1,7 @@
 .register__container {
     width: 31%;
     margin: 0 auto;
+    height: 100vh;
 }
 
 .register__form-set {
@@ -13,7 +14,7 @@
 
 .register__button {
     width: 100%;
-    background-color: #3456F3;
+    background-color: #A0A0A0;
     border-radius: 3px;
     min-height: 45px;
     color: #FFFFFF;
@@ -21,6 +22,10 @@
     font-size: 14px;
     line-height: 1.2;
     border: none;
+}
+
+.register__button_active {
+    background-color: #3456F3;
 }
 
 .register__button:hover {
@@ -84,12 +89,7 @@
     width: 100%;
     color: #EE3465;
     min-height: 12px;
-    visibility: hidden;
     margin: 6px 0;
-}
-
-.register__error_active {
-    visibility: visible;
 }
 
 .register__input-error_active {
