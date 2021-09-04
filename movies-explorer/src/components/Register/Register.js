@@ -4,7 +4,7 @@ import useFormWithValidation from '../Validation/Validation.js';
 
 function Register({ onRegister, isLoading, message }) {
 
-    const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
+    const { values, handleChange, errors, isValid } = useFormWithValidation();
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -20,7 +20,7 @@ function Register({ onRegister, isLoading, message }) {
             <form onSubmit={handleSubmit} action="#" name="register" className="register__form" noValidate>
                 <fieldset className="register__form-set">
                     <label className="register__input-label">Имя</label>
-                    <input value={values.name || ""} autoComplete="email" onChange={handleChange} required minLength="2" maxLength="40" type="name" id='register-name' name="name" className={inputClass} />
+                    <input value={values.name || ""} autoComplete="current-name" onChange={handleChange} required minLength="2" maxLength="40" type="name" id='register-name' name="name" className={inputClass} />
                     <span className="register__error" id='register-name-error'>{errors.name}</span>
                     <label className="register__input-label">E-mail</label>
                     <input required minLength="2" maxLength="40" type="email" id='register-email' name="email" value={values.email || ""} autoComplete="current-email" onChange={handleChange} className={inputClass} />

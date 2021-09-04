@@ -1,5 +1,6 @@
 .movies__pic {
     width: 100%;
+    height: 203px;
 }
 
 .movies__card {
@@ -88,21 +89,15 @@
         margin-bottom: 14px;
     }
 }
-
-@media screen and (max-width: 1300px) {
-    .movies__pic {
-      min-height: 203px;
-    }
-}
   
 @media screen and (max-width: 780px) {
     .movies__pic {
-      min-height: 190px;
+        height: 190px;
     }
 }
   
 @media screen and (max-width: 400px) {
     .movies__pic {
-      min-height: 168px;
+        height: 168px;
     }
 }

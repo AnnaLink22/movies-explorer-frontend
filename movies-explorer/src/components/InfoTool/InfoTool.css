@@ -1,0 +1,70 @@
+.info-tool__container {
+    margin: 0 auto;
+    width: 358px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    padding: 36px;
+}
+
+.info-tool_opened {
+    visibility: visible;
+    opacity: 1;
+  }
+
+.info-tool {
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.5s, opacity 0.5s linear;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+.info-tool__close-btn {
+    background-image: url('../../images/cross.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 57px;
+    height: 57px;
+    background-color: rgba(0, 0, 0, 0);
+    padding: 0;
+    box-sizing: border-box;
+    border: none;
+    position: absolute;
+    top: -50px;
+    right: -50px;
+}
+  
+.info-tool__close-btn:hover {
+    opacity: 0.6;
+}
+
+.info-tool__heading {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Inter', Arial, sans-serif;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 1.2;
+    text-align: center;
+    width: 100%;
+    margin: 32px 0 24px;
+}
+
+.info-tool__img {
+    width: 120px;
+    height: 120px;
+    margin: 24px auto 0;
+}

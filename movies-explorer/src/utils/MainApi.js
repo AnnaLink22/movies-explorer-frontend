@@ -11,14 +11,14 @@ class Api {
     }
 
     getInfo(headers) {
-        return fetch(`${this._url}users/me`, {
+        return fetch(`${this._url}/users/me`, {
             method: 'GET',
             headers: headers
         }).then(onError)
     }
 
     saveUserInfo(userName, userEmail, headers) {
-        return fetch(`${this._url}users/me`, {
+        return fetch(`${this._url}/users/me`, {
             method: 'PATCH',
             headers: headers,
             body: JSON.stringify({
@@ -28,33 +28,36 @@ class Api {
         }).then(onError)
     }
 
-    getLikedMovies(headers) {
-        return fetch(`${this._url}movies`, {
+    getSavedMovies(headers) {
+        return fetch(`${this._url}/movies`, {
             method: 'GET',
             headers: headers
         }).then(onError)
     }
 
     saveNewMovie(movie, headers) {
-        return fetch(`${this._url}movies`, {
+        return fetch(`${this._url}/movies`, {
             method: 'POST',
             headers: headers,
-            body: JSON.stringify({movie})
+            body: JSON.stringify({
+                nameRU: movie.nameRU,
+                nameEN: movie.nameEN,
+                country: movie.country,
+                director: movie.director,
+                description: movie.description,
+                year: movie.year,
+                duration: movie.duration,
+                movieId: movie.id,
+                image: movie.image.url,
+                trailerLink: movie.trailerLink
+            })
         }).then(onError)
     }
 
 
     deleteMovie(movieId, headers) {
-        return fetch(`${this._url}movies/${movieId}`, {
+        return fetch(`${this._url}/movies/${movieId}`, {
             method: "DELETE",
-            headers: headers,
-        })
-            .then(onError)
-    }
-
-    changeMovieLikeStatus(movieId, isLiked, headers) {
-        return fetch(`${this._url}movies/${movieId}/likes`, {
-            method: isLiked ? "PUT" : "DELETE",
             headers: headers,
         })
             .then(onError)
