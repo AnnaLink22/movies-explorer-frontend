@@ -2,7 +2,7 @@ const onError = (res) => {
     if (res.ok) {
         return res.json();
     }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return Promise.reject((`Ошибка: ${res.status}`)); 
 }
 
 class Api {
@@ -39,7 +39,7 @@ class Api {
         return fetch(`${this._url}/movies`, {
             method: 'POST',
             headers: headers,
-            body: JSON.stringify({
+            body: JSON.stringify({    
                 nameRU: movie.nameRU,
                 nameEN: movie.nameEN,
                 country: movie.country,
@@ -47,12 +47,13 @@ class Api {
                 description: movie.description,
                 year: movie.year,
                 duration: movie.duration,
-                movieId: movie.id,
+                id: movie.id,
                 image: movie.image.url,
                 trailerLink: movie.trailerLink
             })
         }).then(onError)
     }
+
 
 
     deleteMovie(movieId, headers) {

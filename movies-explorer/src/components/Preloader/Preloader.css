@@ -49,10 +49,6 @@
     padding: 20px;
 }
 
-.preloader_invisible {
-    display: none;
-}
-
 .preloader__container {
     position: relative;
 }

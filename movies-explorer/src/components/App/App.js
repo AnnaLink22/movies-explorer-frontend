@@ -11,7 +11,6 @@ import Register from '../Register/Register.js';
 import MenuPopup from '../MenuPopup/MenuPopup.js';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute.js';
 import NotFoundPage from '../NotFoundPage/NotFoundPage.js';
-import InfoTool from '../InfoTool/InfoTool.js';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext.js';
 import * as auth from '../../utils/auth.js';
 import api from '../../utils/MainApi.js';
@@ -29,15 +28,13 @@ function App() {
 
   const history = useHistory();
 
+  const [succesMessage, setSuccesMessage] = React.useState('');
+
   const location = useLocation();
 
   const [savedMovies, setSavedMovies] = React.useState([]);
 
   const [shortFilter, setShortFilter] = React.useState(false);
-
-  const [isSuccesful, setIsSuccesful] = React.useState(false);
-
-  const [isInfoToolOpen, setIsInfoToolOpen] = React.useState(false);
 
   const [userData, setUserData] = React.useState({
     name: '',
@@ -45,7 +42,7 @@ function App() {
     password: '',
   });
 
-  const [errorMessage, setErrorMessage] = React.useState({});
+  const [errorMessage, setErrorMessage] = React.useState('');
 
   const [searchResult, setSearchResult] = React.useState([]);
 
@@ -58,23 +55,16 @@ function App() {
 
   const handleRegister = ({ name, email, password }) => {
     setIsloading(true);
-    auth.register({ name, email, password }).then((res) => {
-      setIsSuccesful(true);
-      setIsInfoToolOpen(true);
-      return res;
+    auth.register({ name, email, password })
+    .then(({ name, email}) => {
+      setCurrentUser({name, email});
+      handleLogin({email, password});
     }).catch((err) => {
-      setIsSuccesful(false);
-      setIsInfoToolOpen(true);
-      setErrorMessage(err.message)
+      setErrorMessage(err)
     })
       .finally(() => {
         setIsloading(false);
       })
-  }
-
-  const closeInfotool = () => {
-    setIsInfoToolOpen(false);
-    history.push('/signin');
   }
 
   const handleLogin = ({ email, password }) => {
@@ -88,22 +78,25 @@ function App() {
           history.push('/movies');
           return;
         }
-      }).catch(err => setErrorMessage(err.message))
+      }).catch(err => setErrorMessage(err))
       .finally(() => {
         setIsloading(false);
       })
   }
 
-  function handleUpdateUser(name, email) {
+  function handleUpdateUser(user) {
     setIsloading(true);
-    api.saveUserInfo(name, email, {
+    api.saveUserInfo(user.name, user.email, {
       authorization: `Bearer ${localStorage.getItem('token')}`,
       'Content-Type': 'application/json',
     })
       .then(info => {
         setCurrentUser(info);
+        setSuccesMessage('Данные успешно изменены!');
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err);
+      })
       .finally(() => {
         setIsloading(false);
       })
@@ -121,8 +114,7 @@ function App() {
   }
 
   function toggleShortFilter() {
-    setShortFilter((prevState) => !prevState);
-
+    setShortFilter(!shortFilter);
     setIsLoaderOpen((prevLoaderState) => {
       showLoader(true);
 
@@ -142,7 +134,7 @@ function App() {
         authorization: `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'application/json',
       }).then((newMovie) => {
-        setSavedMovies((state) => state.map((m) => m.id === movie.id ? newMovie : m));
+        setSavedMovies((savedMovies) => [...savedMovies, newMovie]);
       }).catch(err => console.log(err))
     }
   }
@@ -163,12 +155,18 @@ function App() {
 };
 
   function handleMovieDelete(movie) {
-    api.deleteMovie(movie.id, {
+    api.deleteMovie(movie._id, {
       authorization: `Bearer ${localStorage.getItem('token')}`,
       'Content-Type': 'application/json',
     }).then(() => {
-      setSavedMovies((movies) => movies.filter((m) => m.id !== movie.id));
-    }).catch(err => console.log(err))
+      setSavedMovies((movies) => movies.filter((m) => m._id !== movie._id));
+    })
+    .then(() => {
+      setSavedMoviesSearchResult((prevState) => 
+      prevState.filter((m) => m._id !== movie._id)
+      );
+    })
+    .catch(err => console.log(err))
   }
 
   function showLoader(isLoaderOpen) {
@@ -247,32 +245,24 @@ function App() {
     setSearchResult(movies);
   }, []);
 
-  // React.useEffect(() => {
-  //   if (loggedIn) {
-  //     Promise.all([
-  //       api.getInfo({
-  //         authorization: `Bearer ${localStorage.getItem('token')}`,
-  //         'Content-Type': 'application/json',
-  //       }),
-  //       api.getSavedMovies({
-  //         authorization: `Bearer ${localStorage.getItem('token')}`,
-  //         'Content-Type': 'application/json',
-  //       }),
-  //     ]).then(([info, movies]) => {
-  //       setCurrentUser(info);
-  //       setSavedMovies(movies);
-  //     })
-  //       .catch((err) => {
-  //         // localStorage.removeItem('token');
-  //         localStorage.removeItem('movies');
-  //         localStorage.removeItem('searchResult');
-  //         setSearchResult([]);
-  //         setSavedMovies([]);
-  //         setSavedMoviesSearchResult([]);
-  //         setLoggedIn(false);
-  //       })
-  //   }
-  // }, [loggedIn])
+  React.useEffect(() => {
+    if (loggedIn) {
+      Promise.all([
+        api.getInfo({
+          authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json',
+        }),
+        api.getSavedMovies({
+          authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json',
+        }),
+      ]).then(([info, movies]) => {
+        setCurrentUser(info);
+        setSavedMovies(movies);
+      })
+        .catch(err => console.log(err))
+      }
+    }, [loggedIn])
 
   React.useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -285,6 +275,12 @@ function App() {
         }
       }).catch(() => {
         localStorage.removeItem('token');
+        localStorage.removeItem('movies');
+        localStorage.removeItem('searchResult');
+        setSearchResult([]);
+        setSavedMovies([]);
+        setSavedMoviesSearchResult([]);
+        setLoggedIn(false);
       })
     }
   }, [history, loggedIn]);
@@ -317,11 +313,13 @@ function App() {
             loggedIn={loggedIn}
             component={SavedMovies}
             savedMovies={savedMovies}
+            onSearch={handleSearch}
             handleMovieLike={handleMovieLike}
             handleMovieDelete={handleMovieDelete}
             savedMoviesSearchResult={savedMoviesSearchResult || []}
             isLoaderOpen={isLoaderOpen}
             noResult={noResult}
+            errorMessage={errorMessage}
             toggleShortFilter={toggleShortFilter}
             shortFilter={shortFilter}
           />
@@ -334,6 +332,8 @@ function App() {
             component={Profile}
             onUpdate={handleUpdateUser}
             onSignout={handleSignOut}
+            errorMessage={errorMessage}
+            succesMessage={succesMessage}
           />
 
           <Route path="/signin">
@@ -365,8 +365,6 @@ function App() {
           </Route>
 
         </Switch>
-
-        <InfoTool isOpen={isInfoToolOpen} isSuccesful={isSuccesful} onClose={closeInfotool} />
 
         <MenuPopup />
 

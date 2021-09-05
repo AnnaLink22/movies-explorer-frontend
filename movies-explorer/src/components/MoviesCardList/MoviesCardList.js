@@ -3,7 +3,6 @@ import { useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import MoviesCard from '../MoviesCard/MoviesCard.js';
 import Preloader from '../Preloader/Preloader.js';
-import { filterShortMovies } from '../../utils/helpers.js';
 
 function MoviesCardList({
   isLoaderOpen,
@@ -46,15 +45,19 @@ function MoviesCardList({
     }
   }
 
-  const renderMovies = (searchResult, savedMovies, savedMoviesSearchResult) => {
+  const filterShortMovies = (movies) => {
+    return movies.filter((movie) => movie.duration <= 40);
+  };
+
+  function renderMovies(searchResult, savedMovies, savedMoviesSearchResult) {
     if (!shortFilter) {
       return location.pathname === '/movies'
-        ? searchResult || []
+        ? searchResult.slice(0, cardsAmount) || []
         : savedMoviesSearchResult.length > 0
-          ? savedMoviesSearchResult : savedMovies;
+        ? savedMoviesSearchResult : savedMovies;
     } else {
       return location.pathname === '/movies'
-        ? filterShortMovies(searchResult) || []
+        ? filterShortMovies(searchResult).slice(0, cardsAmount) || []
         : savedMoviesSearchResult.length > 0
           ? filterShortMovies(savedMoviesSearchResult)
           : filterShortMovies(savedMovies)
@@ -96,33 +99,29 @@ function MoviesCardList({
     };
   }, []);
 
-
-
-
-
   return (
     <section className="movies__section">
-      <Preloader isLoaderOpen={isLoaderOpen} />
+      {isLoaderOpen && <Preloader />}
 
-      {shortFilter && renderedMovies.length === 0 && (
+      {!isLoaderOpen && shortFilter && renderedMovies.length === 0 && (
         <div className="movies__no-result">
           <p className="movies__no-result-text">Короткометражных фильмов не найдено</p>
         </div>
       )}
 
-      {shortFilter && noResult && (
+      {!isLoaderOpen && shortFilter && noResult && (
         <div className="movies__no-result">
           <p className="movies__no-result-text">Короткометражных фильмов не найдено</p>
         </div>
       )}
 
-      {!shortFilter && noResult && (
+      {!isLoaderOpen && !shortFilter && noResult && (
         <div className="movies__no-result">
           <p className="movies__no-result-text">Ничего не найдено</p>
         </div>
       )}
 
-      {errorMessage && noResult && (
+      {!isLoaderOpen && errorMessage && noResult && (
         <div className="movies__no-result">
           <p className="movies__no-result-text">{errorMessage}</p>
         </div>
@@ -130,7 +129,7 @@ function MoviesCardList({
 
 
       <ul className="movies__grid">
-        {renderedMovies.slice(0, cardsAmount).map((item) =>
+        {!isLoaderOpen && renderedMovies.map((item) =>
           <MoviesCard
             movie={item}
             key={item.id || item._id}

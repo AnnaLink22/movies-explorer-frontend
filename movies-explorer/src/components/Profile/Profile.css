@@ -1,6 +1,5 @@
 .profile__container{
     width: 32%;
-    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -60,10 +59,6 @@
     text-align: right;
 }
 
-.profile__input-error_active {
-    color: #EE3465;
-}
-
 .profile__button {
     margin: 215px 0 16px;
     border: none;
@@ -88,6 +83,22 @@
     color: #EE3465;
     min-height: 12px;
     margin: 6px 0;
+}
+
+.profile__message {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+    color: #3456F3;
+    min-height: 20px;
+    text-align: center;
+}
+
+.profile__message_error {
+    color: #EE3465;
 }
 
 .profile__button:hover {

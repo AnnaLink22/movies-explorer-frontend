@@ -92,11 +92,6 @@
     margin: 6px 0;
 }
 
-.login__input-error_active {
-    color: #EE3465;
-}
-
-
 @media screen and (max-width: 780px) {
     .login__container {
         width: 51%;

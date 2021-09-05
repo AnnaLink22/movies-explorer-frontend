@@ -40,6 +40,7 @@
     height: 20px;
     background-color: #2BE080;
     border-radius: 20px;
+    transition: 0.3s;
 } 
 
 .invisible-checkbox:hover + .visible-checkbox {

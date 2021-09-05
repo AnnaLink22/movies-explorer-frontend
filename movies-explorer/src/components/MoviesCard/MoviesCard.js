@@ -4,8 +4,8 @@ import React from 'react';
 function MoviesCard({ 
     movie, 
     handleMovieLike, 
-    handleMovieDelete, 
-    savedMovies }) {
+    savedMovies 
+    }) {
     
     const location = useLocation();
 
@@ -13,12 +13,8 @@ function MoviesCard({
 
     const movieDuration = `${Math.floor(movie.duration / 60)}ч ${movie.duration % 60}м`;
 
-    function onSave() {
+    function onSaveOrDelete() {
         handleMovieLike(movie);
-    };
-
-    function onDelete() {
-        handleMovieDelete(movie);
     };
     
     function checkIfSaved(savedMovies, movie) {
@@ -33,20 +29,23 @@ function MoviesCard({
     return (
         <li className="movies__card">
             <a className="movies__card-link" href={movie.trailerLink} target="_blank" rel="noreferrer">
-                <img src={movie.image.url} alt={movie.nameRU} className="movies__pic" />
+                <img 
+                src={`${ movie.image.url || movie.image }`}
+                alt={movie.nameRU} className="movies__pic" 
+                />
             </a>
             <div className="movies__card-container">
                 <div className="movies__card-text">
                     <p className="movies__card-name">{movie.nameRU}</p>
                     <p className="movies__card-time">{movieDuration}</p>
                 </div>
-                { location.pathname === '/movies' && (
-                   <button onClick={isSaved ? onDelete : onSave} type="button" className={`${isSaved ? 'movies__like_active' : 'movies__like'}`}></button> 
-                )
-                }
-                { location.pathname === '/saved-movies' && (
-                    <button onClick={onDelete} type="button" className='movies__delete'></button>
-                )}
+                   
+                <button 
+                onClick={onSaveOrDelete} 
+                type="button" 
+                className={`movies__btn ${isSaved && 'movies__btn_save'} 
+                ${location.pathname === '/saved-movies' && 'movies__btn_delete'}`}
+                ></button> 
             </div>
         </li>
     )

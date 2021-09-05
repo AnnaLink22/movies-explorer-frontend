@@ -41,7 +41,7 @@
     line-height: 1.2;
 }
 
-.movies__like {
+.movies__btn {
     width: 30px;
     height: 30px;
     background-color: #FFFFFF;
@@ -52,7 +52,7 @@
     padding: 0;
 }
 
-.movies__like_active {
+.movies__btn_save {
     background-image: url('../../images/like_active.svg');
 }
 
@@ -60,7 +60,7 @@
     cursor: pointer;
 }
 
-.movies__delete { 
+.movies__btn_delete { 
     width: 30px;
     height: 30px;
     background-color: #FFFFFF;
@@ -72,7 +72,7 @@
     visibility: hidden;
 }
 
-.movies__card:hover .movies__delete {
+.movies__card:hover .movies__btn_delete {
     visibility: visible;
 }
 
