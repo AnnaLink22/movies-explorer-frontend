@@ -56,12 +56,12 @@ function App() {
   const handleRegister = ({ name, email, password }) => {
     setIsloading(true);
     auth.register({ name, email, password })
-    .then(({ name, email}) => {
-      setCurrentUser({name, email});
-      handleLogin({email, password});
-    }).catch((err) => {
-      setErrorMessage(err)
-    })
+      .then(({ name, email }) => {
+        setCurrentUser({ name, email });
+        handleLogin({ email, password });
+      }).catch((err) => {
+        setErrorMessage(err)
+      })
       .finally(() => {
         setIsloading(false);
       })
@@ -125,8 +125,9 @@ function App() {
     });
   }
 
+
   function handleMovieLike(movie) {
-    const savedMovie = savedMovies.find((m) => m.id === movie.id);
+    const savedMovie = savedMovies.find((m) => m.nameRU === movie.nameRU);
     if (savedMovie) {
       handleMovieDelete(savedMovie);
     } else {
@@ -135,50 +136,51 @@ function App() {
         'Content-Type': 'application/json',
       }).then((newMovie) => {
         setSavedMovies((savedMovies) => [...savedMovies, newMovie]);
+        console.log(savedMovies);
       }).catch(err => console.log(err))
     }
   }
 
-  const deleteNullDataMovies = (movies) => {
-    return movies.filter((movie) => !Object.values(movie).includes(null));
-  };
+    const deleteNullDataMovies = (movies) => {
+      return movies.filter((movie) => !Object.values(movie).includes(null));
+    };
 
-  const changeImageUrl = (movies) => {
-    return movies.map((movie) => {
-      Object.keys(movie.image).forEach((key) => {
-        if (key === 'url') {
-          movie.image.url = url + movie.image.url;
-        }
+    const changeImageUrl = (movies) => {
+      return movies.map((movie) => {
+        Object.keys(movie.image).forEach((key) => {
+          if (key === 'url') {
+            movie.image.url = url + movie.image.url;
+          }
+        });
+        return movie;
       });
-      return movie;
-    });
-};
+    };
 
-  function handleMovieDelete(movie) {
-    api.deleteMovie(movie._id, {
-      authorization: `Bearer ${localStorage.getItem('token')}`,
-      'Content-Type': 'application/json',
-    }).then(() => {
-      setSavedMovies((movies) => movies.filter((m) => m._id !== movie._id));
-    })
-    .then(() => {
-      setSavedMoviesSearchResult((prevState) => 
-      prevState.filter((m) => m._id !== movie._id)
-      );
-    })
-    .catch(err => console.log(err))
-  }
+    function handleMovieDelete(movie) {
+      api.deleteMovie(movie._id, {
+        authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      }).then(() => {
+        setSavedMovies((movies) => movies.filter((m) => m._id !== movie._id));
+      })
+        .then(() => {
+          setSavedMoviesSearchResult((prevState) =>
+            prevState.filter((m) => m._id !== movie._id)
+          );
+        })
+        .catch(err => console.log(err))
+    }
 
-  function showLoader(isLoaderOpen) {
-    isLoaderOpen ? setIsLoaderOpen(true) : setIsLoaderOpen(false);
-  }
+    function showLoader(isLoaderOpen) {
+      isLoaderOpen ? setIsLoaderOpen(true) : setIsLoaderOpen(false);
+    }
 
-  function showNoResult(searchResult) {
-    searchResult.length === 0 ? setNoResult(true) : setNoResult(false);
-  }
+    function showNoResult(searchResult) {
+      searchResult.length === 0 ? setNoResult(true) : setNoResult(false);
+    }
 
-  function getAllMovies(searchQuery) {
-    moviesApi.getAllMovies()
+    function getAllMovies(searchQuery) {
+      moviesApi.getAllMovies()
         .then((movies) => {
           const moviesWithData = deleteNullDataMovies(movies);
           const moviesChangedUrl = changeImageUrl(moviesWithData);
@@ -197,181 +199,179 @@ function App() {
             showLoader(false);
           }, 400);
         });
-  }
+    }
 
-  function searchMovie(searchQuery, movies) {
-    const searchResult = movies.filter(
+    function searchMovie(searchQuery, movies) {
+      const searchResult = movies.filter(
         (movie) => movie.nameRU.toLowerCase().indexOf(searchQuery) !== -1
-    );
-    if (location.pathname === '/movies') {
-      localStorage.setItem('searchResult', JSON.stringify(searchResult));
-      setSearchResult(searchResult);
-    } else {
-      setSavedMoviesSearchResult(searchResult);
+      );
+      if (location.pathname === '/movies') {
+        localStorage.setItem('searchResult', JSON.stringify(searchResult));
+        setSearchResult(searchResult);
+      } else {
+        setSavedMoviesSearchResult(searchResult);
+      }
+      showNoResult(searchResult);
     }
-    showNoResult(searchResult);
-  }
 
-  function handleSearch(searchQuery) {
-    const searchQueryLowerCase = searchQuery.toLowerCase();
-    const movies = JSON.parse(localStorage.getItem('movies'));
+    function handleSearch(searchQuery) {
+      const searchQueryLowerCase = searchQuery.toLowerCase();
+      const movies = JSON.parse(localStorage.getItem('movies'));
 
-    if (location.pathname === '/movies' && movies === null) {
-      getAllMovies(searchQueryLowerCase);
-    } else {
-      showLoader(true);
-      setTimeout(() => {
-        showLoader(false);
-        if (location.pathname === '/movies') {
-          searchMovie(searchQueryLowerCase, movies);
-        } else {
-          searchMovie(searchQueryLowerCase, savedMovies);
-        }
-      }, 400);
+      if (location.pathname === '/movies' && movies === null) {
+        getAllMovies(searchQueryLowerCase);
+      } else {
+        showLoader(true);
+        setTimeout(() => {
+          showLoader(false);
+          if (location.pathname === '/movies') {
+            searchMovie(searchQueryLowerCase, movies);
+          } else {
+            searchMovie(searchQueryLowerCase, savedMovies);
+          }
+        }, 400);
+      }
+      setNoResult(false);
     }
-    setNoResult(false);
-  }
 
-  React.useEffect(() => {
-    setIsLoaderOpen(false);
-    setNoResult(false);
-    setSavedMoviesSearchResult([]);
-    setErrorMessage('');
-    setShortFilter(false);
-  }, [location]);
+    React.useEffect(() => {
+      setIsLoaderOpen(false);
+      setNoResult(false);
+      setSavedMoviesSearchResult([]);
+      setErrorMessage('');
+      setShortFilter(false);
+    }, [location]);
 
-  React.useEffect(() => {
-    const movies = JSON.parse(localStorage.getItem('searchResult'));
-    setSearchResult(movies);
-  }, []);
+    React.useEffect(() => {
+      const movies = JSON.parse(localStorage.getItem('searchResult'));
+      setSearchResult(movies);
+    }, []);
 
-  React.useEffect(() => {
-    if (loggedIn) {
-      Promise.all([
-        api.getInfo({
-          authorization: `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json',
-        }),
-        api.getSavedMovies({
-          authorization: `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json',
-        }),
-      ]).then(([info, movies]) => {
-        setCurrentUser(info);
-        setSavedMovies(movies);
-      })
-        .catch(err => console.log(err))
+    React.useEffect(() => {
+      if (loggedIn) {
+        Promise.all([
+          api.getInfo({
+            authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+          }),
+          api.getSavedMovies({
+            authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+          }),
+        ]).then(([info, movies]) => {
+          setCurrentUser(info);
+          setSavedMovies(movies);
+        })
+          .catch(err => console.log(err))
       }
     }, [loggedIn])
 
-  React.useEffect(() => {
-    if (localStorage.getItem('token')) {
-      const token = localStorage.getItem('token');
-      auth.getUser(token).then((user) => {
-        if (user.email) {
-          setUserData({ email: user.email, name: user.name, _id: user._id });
-          setLoggedIn(true);
-          history.push('/movies');
-        }
-      }).catch(() => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('movies');
-        localStorage.removeItem('searchResult');
-        setSearchResult([]);
-        setSavedMovies([]);
-        setSavedMoviesSearchResult([]);
-        setLoggedIn(false);
-      })
-    }
-  }, [history, loggedIn]);
+    React.useEffect(() => {
+      if (localStorage.getItem('token')) {
+        const token = localStorage.getItem('token');
+        auth.getUser(token).then((user) => {
+          if (user.email) {
+            setUserData({ email: user.email, name: user.name, _id: user._id });
+            setLoggedIn(true);
+            history.push('/movies');
+          }
+        }).catch(() => {
+          localStorage.removeItem('token');
+          localStorage.removeItem('movies');
+          localStorage.removeItem('searchResult');
+          setSearchResult([]);
+          setSavedMovies([]);
+          setSavedMoviesSearchResult([]);
+          setLoggedIn(false);
+        })
+      }
+    }, [history, loggedIn]);
 
 
-  return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <div className="app">
-        <Header />
+    return (
+      <CurrentUserContext.Provider value={currentUser}>
+        <div className="app">
+          <Header loggedIn={loggedIn} />
 
-        <Switch>
+          <Switch>
 
-          <ProtectedRoute path="/movies"
-            component={Movies}
-            onSearch={handleSearch}
-            loggedIn={loggedIn}
-            handleMovieLike={handleMovieLike}
-            handleMovieDelete={handleMovieDelete}
-            savedMovies={savedMovies}
-            searchResult={searchResult || []}
-            noResult={noResult}
-            errorMessage={errorMessage}
-            isLoaderOpen={isLoaderOpen}
-            toggleShortFilter={toggleShortFilter}
-            shortFilter={shortFilter}
-          />
+            <ProtectedRoute path="/movies"
+              component={Movies}
+              onSearch={handleSearch}
+              loggedIn={loggedIn}
+              handleMovieLike={handleMovieLike}
+              savedMovies={savedMovies}
+              searchResult={searchResult || []}
+              noResult={noResult}
+              errorMessage={errorMessage}
+              isLoaderOpen={isLoaderOpen}
+              toggleShortFilter={toggleShortFilter}
+              shortFilter={shortFilter}
+            />
 
-          <ProtectedRoute
-            path="/saved-movies"
-            loggedIn={loggedIn}
-            component={SavedMovies}
-            savedMovies={savedMovies}
-            onSearch={handleSearch}
-            handleMovieLike={handleMovieLike}
-            handleMovieDelete={handleMovieDelete}
-            savedMoviesSearchResult={savedMoviesSearchResult || []}
-            isLoaderOpen={isLoaderOpen}
-            noResult={noResult}
-            errorMessage={errorMessage}
-            toggleShortFilter={toggleShortFilter}
-            shortFilter={shortFilter}
-          />
+            <ProtectedRoute
+              path="/saved-movies"
+              loggedIn={loggedIn}
+              component={SavedMovies}
+              savedMovies={savedMovies}
+              onSearch={handleSearch}
+              handleMovieLike={handleMovieLike}
+              savedMoviesSearchResult={savedMoviesSearchResult || []}
+              isLoaderOpen={isLoaderOpen}
+              noResult={noResult}
+              errorMessage={errorMessage}
+              toggleShortFilter={toggleShortFilter}
+              shortFilter={shortFilter}
+            />
 
-          <ProtectedRoute
-            path="/profile"
-            loggedIn={loggedIn}
-            email={userData.email}
-            name={userData.name}
-            component={Profile}
-            onUpdate={handleUpdateUser}
-            onSignout={handleSignOut}
-            errorMessage={errorMessage}
-            succesMessage={succesMessage}
-          />
+            <ProtectedRoute
+              path="/profile"
+              loggedIn={loggedIn}
+              email={userData.email}
+              name={userData.name}
+              component={Profile}
+              onUpdate={handleUpdateUser}
+              onSignout={handleSignOut}
+              errorMessage={errorMessage}
+              succesMessage={succesMessage}
+            />
 
-          <Route path="/signin">
-            <div className="login__container">
-              <Login
-                onLogin={handleLogin}
-                isLoading={isLoading}
-                errorMessage={errorMessage}
-              />
-            </div>
-          </Route>
+            <Route path="/signin">
+              <div className="login__container">
+                <Login
+                  onLogin={handleLogin}
+                  isLoading={isLoading}
+                  errorMessage={errorMessage}
+                />
+              </div>
+            </Route>
 
-          <Route path="/signup">
-            <div className="register__container">
-              <Register
-                onRegister={handleRegister}
-                isLoading={isLoading}
-                errorMessage={errorMessage}
-              />
-            </div>
-          </Route>
+            <Route path="/signup">
+              <div className="register__container">
+                <Register
+                  onRegister={handleRegister}
+                  isLoading={isLoading}
+                  errorMessage={errorMessage}
+                />
+              </div>
+            </Route>
 
-          <Route exact path="/">
-            <Main />
-          </Route>
+            <Route exact path="/">
+              <Main />
+            </Route>
 
-          <Route path="*">
-            <NotFoundPage />
-          </Route>
+            <Route path="*">
+              <NotFoundPage />
+            </Route>
 
-        </Switch>
+          </Switch>
 
-        <MenuPopup />
+          <MenuPopup />
 
-        <Footer />
-      </div>
-    </CurrentUserContext.Provider >
-  )
-}
+          <Footer />
+        </div>
+      </CurrentUserContext.Provider >
+    )
+  }
 
-export default App;
+  export default App;

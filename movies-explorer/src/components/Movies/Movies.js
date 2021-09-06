@@ -5,7 +5,6 @@ function Movies({
     isLoaderOpen,
     onSearch,
     handleMovieLike,
-    handleMovieDelete,
     savedMovies,
     searchResult,
     noResult,
@@ -20,7 +19,6 @@ function Movies({
             <MoviesCardList
                 isLoaderOpen={isLoaderOpen}
                 handleMovieLike={handleMovieLike}
-                handleMovieDelete={handleMovieDelete}
                 savedMovies={savedMovies}
                 searchResult={searchResult}
                 noResult={noResult}

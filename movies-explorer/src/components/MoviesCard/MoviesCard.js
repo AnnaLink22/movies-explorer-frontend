@@ -3,8 +3,8 @@ import React from 'react';
 
 function MoviesCard({ 
     movie, 
-    handleMovieLike, 
-    savedMovies 
+    handleMovieLike,
+    savedMovies,
     }) {
     
     const location = useLocation();
@@ -22,15 +22,15 @@ function MoviesCard({
     };
 
     React.useEffect(() => {
-        const saved = checkIfSaved(savedMovies, movie);
-        setIsSaved(saved);
+        const result = checkIfSaved(savedMovies, movie);
+        setIsSaved(result);
     }, [savedMovies, movie]);
 
     return (
         <li className="movies__card">
             <a className="movies__card-link" href={movie.trailerLink} target="_blank" rel="noreferrer">
                 <img 
-                src={`${ movie.image.url || movie.image }`}
+                src={`${ movie.image.url || movie.image}`}
                 alt={movie.nameRU} className="movies__pic" 
                 />
             </a>

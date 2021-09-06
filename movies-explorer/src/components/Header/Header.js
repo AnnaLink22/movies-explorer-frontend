@@ -1,7 +1,7 @@
 import { Route, Switch, Link } from 'react-router-dom';
 import Navigation from '../Navigation/Navigation.js';
 
-function Header() {
+function Header({ loggedIn }) {
     return (
         <header className="header">
             <Switch>
@@ -33,10 +33,15 @@ function Header() {
                     <div className="header__cover">
                         <div className="header__container">
                             <Link to="/" className="header__logo"></Link>
-                            <div className="header__column">
-                                <Link to="/signup" className="header__container-link">Регистрация</Link>
-                                <Link to="/signin" className="header__container-signin-btn" >Войти</Link>
-                            </div>
+
+                            {loggedIn && <Navigation />}
+
+                            {!loggedIn && (
+                                <div className="header__column">
+                                    <Link to="/signup" className="header__container-link">Регистрация</Link>
+                                    <Link to="/signin" className="header__container-signin-btn" >Войти</Link>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </Route>

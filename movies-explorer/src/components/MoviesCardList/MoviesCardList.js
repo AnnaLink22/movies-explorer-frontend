@@ -7,7 +7,6 @@ import Preloader from '../Preloader/Preloader.js';
 function MoviesCardList({
   isLoaderOpen,
   handleMovieLike,
-  handleMovieDelete,
   savedMovies,
   searchResult,
   noResult,
@@ -66,19 +65,19 @@ function MoviesCardList({
 
   const renderedMovies = renderMovies(searchResult, savedMovies, savedMoviesSearchResult);
 
-  const toggleMoreBtn = useCallback(() => {
-    if (renderedMovies.length > cardsAmount) {
-      setMoreBtnVisible(true);
+  const toggleMoreBtn = useCallback((movies, renderedMovies) => {
+    if (!shortFilter) {
+      movies.length <= cardsAmount ? setMoreBtnVisible(false) : setMoreBtnVisible(true);
     } else {
-      setMoreBtnVisible(false);
+      renderedMovies.length <= cardsAmount ? setMoreBtnVisible(false) : setMoreBtnVisible(true);
     }
-  }, [renderedMovies, cardsAmount]);
+  }, [cardsAmount, shortFilter]);
 
   useEffect(() => {
     if (location.pathname === '/movies') {
-      toggleMoreBtn();
+      toggleMoreBtn(searchResult, renderedMovies);
     }
-  }, [location.pathname, toggleMoreBtn])
+  }, [location.pathname, searchResult, toggleMoreBtn, renderedMovies]);
 
   React.useEffect(() => {
     getCardsIndex();
@@ -134,7 +133,6 @@ function MoviesCardList({
             movie={item}
             key={item.id || item._id}
             handleMovieLike={handleMovieLike}
-            handleMovieDelete={handleMovieDelete}
             savedMovies={savedMovies}
           />)
         }
